@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NorthSouth Coffee – AI Loyalty Engagement Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%233C2412'/%3E%3Cpath d='M8 12c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v2c0 2.2-1.8 4-4 4h-8c-2.2 0-4-1.8-4-4v-2z' fill='%23D4A574'/%3E%3Cpath d='M16 18v8' stroke='%23D4A574' stroke-width='2'/%3E%3Cpath d='M12 26h8' stroke='%23D4A574' stroke-width='2'/%3E%3Ccircle cx='16' cy='8' r='2' fill='%233C2412'/%3E%3C/svg%3E">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --espresso:#3C2412;
+  --espresso-light:#5C3A1E;
+  --latte:#D4A574;
+  --latte-light:#E8C9A0;
+  --cream:#FDF8F3;
+  --cream-dark:#F5ECE1;
+  --mint:#7BC4A0;
+  --mint-dark:#5AA87E;
+  --warm:#F5A623;
+  --text:#1A120B;
+  --text-light:#6B5A4A;
+  --text-muted:#9B8A7A;
+  --white:#FFFFFF;
+  --shadow:0 4px 24px rgba(60,36,18,0.07);
+  --shadow-lg:0 12px 48px rgba(60,36,18,0.1);
+  --radius:16px;
+  --radius-sm:10px;
+  --radius-xs:6px;
+  --font:'Inter',-apple-system,sans-serif;
+
+  --c-diag:#7C3AED;
+  --c-habit:#3C2412;
+  --c-person:#D4A574;
+  --c-gami:#7BC4A0;
+  --c-reng:#F5A623;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--cream);color:var(--text);line-height:1.6;overflow-x:hidden}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--cream)}
+::-webkit-scrollbar-thumb{background:var(--latte);border-radius:3px}
+
+header{background:var(--espresso);color:var(--white);padding:0 24px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,0.2)}
+.header-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;letter-spacing:-0.3px}
+.logo svg{flex-shrink:0}
+.logo span{color:var(--latte)}
+.logo small{font-weight:400;font-size:11px;opacity:0.5;margin-left:4px}
+nav{display:flex;gap:24px;align-items:center}
+nav a{color:rgba(255,255,255,0.65);text-decoration:none;font-size:14px;font-weight:500;transition:color 0.2s}
+nav a:hover,nav a.active{color:var(--latte)}
+.badge{background:var(--latte);color:var(--espresso);font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;margin-left:6px}
+
+section{padding:64px 24px}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-tag{display:inline-block;background:var(--espresso);color:var(--latte);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;padding:4px 14px;border-radius:20px;margin-bottom:16px}
+.section-tag.light{background:var(--latte);color:var(--espresso)}
+h2{font-size:34px;font-weight:800;letter-spacing:-0.8px;line-height:1.15;margin-bottom:12px}
+h2 em{color:var(--espresso);font-style:normal}
+.subtitle{font-size:16px;color:var(--text-light);max-width:600px;line-height:1.7}
+
+#hero{background:linear-gradient(135deg,var(--espresso) 0%,var(--espresso-light) 100%);padding:72px 24px 88px;position:relative;overflow:hidden}
+#hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(212,165,116,0.08) 0%,transparent 60%);pointer-events:none}
+.hero-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;position:relative;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(212,165,116,0.15);border:1px solid rgba(212,165,116,0.25);padding:5px 14px 5px 10px;border-radius:100px;font-size:12px;color:var(--latte-light);margin-bottom:20px}
+.hero-badge .dot{width:7px;height:7px;background:#22C55E;border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.25}}
+.hero-grid h1{font-size:46px;font-weight:900;letter-spacing:-1.8px;line-height:1.08;color:var(--white);margin-bottom:16px}
+.hero-grid h1 em{color:var(--latte);font-style:normal}
+.hero-grid p{font-size:17px;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:28px;max-width:480px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;border-radius:var(--radius-sm);font-weight:600;font-size:15px;cursor:pointer;border:none;text-decoration:none;transition:all 0.25s;font-family:var(--font)}
+.btn-primary{background:var(--latte);color:var(--espresso)}
+.btn-primary:hover{background:var(--latte-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(212,165,116,0.35)}
+.btn-outline{background:transparent;color:var(--white);border:2px solid rgba(255,255,255,0.2)}
+.btn-outline:hover{border-color:var(--latte);color:var(--latte);transform:translateY(-2px)}
+.btn-ghost{background:rgba(255,255,255,0.08);color:var(--white);padding:8px 18px;font-size:13px}
+.btn-ghost:hover{background:rgba(255,255,255,0.15)}
+.btn-sm{padding:8px 18px;font-size:13px}
+.hero-metrics{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hero-metric{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius-sm);padding:16px 20px}
+.hero-metric .top{display:flex;justify-content:space-between;align-items:baseline}
+.hero-metric .val{font-size:32px;font-weight:800;color:var(--white);letter-spacing:-0.5px}
+.hero-metric .val.bad{color:#F87171}
+.hero-metric .val.good{color:var(--latte)}
+.hero-metric .lbl{font-size:12px;color:rgba(255,255,255,0.45);margin-top:4px}
+.hero-metric .sub{font-size:11px;color:rgba(255,255,255,0.25)}
+
+#problem{background:var(--white)}
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:36px}
+.problem-card{border-radius:var(--radius);padding:28px 32px}
+.problem-card.before{background:#FEF2F2;border:1px solid #FECACA}
+.problem-card.after{background:#F0FDF4;border:1px solid #BBF7D0}
+.problem-card .icon{font-size:36px;margin-bottom:10px}
+.problem-card h3{font-size:20px;font-weight:700;margin-bottom:8px}
+.problem-card p{font-size:14px;color:var(--text-light);line-height:1.7}
+.problem-card ul{list-style:none;margin-top:14px}
+.problem-card ul li{padding:7px 0;font-size:13px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(0,0,0,0.03)}
+.problem-card ul li:last-child{border:none}
+.problem-card ul li .check{color:var(--mint-dark);font-weight:700}
+.problem-card ul li .cross{color:#EF4444;font-weight:700}
+.root-cause{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:32px}
+.root-item{background:var(--cream);border-radius:var(--radius-sm);padding:18px;text-align:center}
+.root-item .pct{font-size:28px;font-weight:800;color:var(--espresso)}
+.root-item .pct .sm{font-size:14px;font-weight:400;color:var(--text-muted)}
+.root-item .label{font-size:12px;color:var(--text-light);margin-top:4px}
+
+#agents{background:var(--cream)}
+.agents-header{text-align:center;margin-bottom:40px}
+.agents-header .subtitle{margin:0 auto}
+.pipeline-wrap{margin-bottom:36px;background:var(--white);border-radius:var(--radius);padding:36px 24px;box-shadow:var(--shadow);overflow:hidden}
+.pipeline-svg{width:100%;max-width:1050px;margin:0 auto;display:block}
+.pipeline-svg .agent-node{cursor:pointer;transition:all 0.3s}
+.pipeline-svg .agent-node:hover .node-bg{filter:brightness(1.05)}
+.pipeline-svg .agent-node.active .node-bg{stroke-width:2.5}
+.pipeline-svg .node-bg{transition:all 0.4s}
+.pipeline-svg .node-emoji{font-size:22px;pointer-events:none}
+.pipeline-svg .node-label{font-size:11px;font-weight:600;text-anchor:middle;pointer-events:none;fill:var(--text)}
+.pipeline-svg .node-persona{font-size:8px;text-anchor:middle;pointer-events:none;fill:var(--text-muted)}
+.pipeline-svg .node-sub{font-size:9px;text-anchor:middle;pointer-events:none;fill:var(--text-muted)}
+.pipeline-svg .flow-line{stroke:var(--cream-dark);stroke-width:2;fill:none}
+.pipeline-svg .flow-line.live{stroke:var(--latte);stroke-width:2.5;stroke-dasharray:8 4;animation:dashMove 0.8s linear infinite;opacity:0}
+@keyframes dashMove{to{stroke-dashoffset:-24}}
+.pipeline-svg .flow-dot{fill:var(--latte);r:4;opacity:0}
+
+.agent-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(195px,1fr));gap:14px;margin-top:32px}
+.agent-card{background:var(--white);border-radius:var(--radius-sm);padding:18px;box-shadow:var(--shadow);border-left:4px solid var(--cream-dark);transition:all 0.3s;cursor:default}
+.agent-card.active{border-left-color:var(--latte);box-shadow:var(--shadow-lg);transform:translateY(-2px)}
+.agent-card .card-head{display:flex;align-items:center;gap:10px;margin-bottom:6px}
+.agent-card .card-head .dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;transition:background 0.3s}
+.agent-card .card-head .dot.idle{background:var(--cream-dark)}
+.agent-card .card-head .dot.working{background:var(--warm);animation:pulse 0.8s infinite}
+.agent-card .card-head .dot.done{background:var(--mint-dark)}
+.agent-card .card-head .role{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.agent-card h4{font-size:15px;font-weight:700;margin-bottom:3px}
+.agent-card .persona{border-top:1px solid var(--cream-dark);padding-top:8px;margin-bottom:8px}
+.agent-card .persona-name{font-size:13px;font-weight:700;color:var(--espresso)}
+.agent-card .persona-title{font-size:11px;color:var(--text-muted);margin-bottom:4px;line-height:1.4}
+.agent-card .persona-traits{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:5px}
+.agent-card .persona-traits .trait{font-size:10px;font-weight:600;padding:2px 8px;border-radius:10px;letter-spacing:0.2px}
+.agent-card .persona-note{font-size:11px;font-style:italic;color:var(--text-light);line-height:1.5;padding:6px 8px;background:var(--cream);border-radius:5px;border-left:2px solid var(--latte)}
+.agent-card .desc{font-size:12px;color:var(--text-light);line-height:1.5;margin-bottom:8px}
+.agent-card .output-box{background:var(--cream);border-radius:6px;padding:10px 12px;font-size:12px;line-height:1.6;max-height:0;overflow:hidden;transition:max-height 0.5s,opacity 0.3s;opacity:0}
+.agent-card .output-box.show{max-height:300px;opacity:1}
+.agent-card .output-box .olabel{font-weight:600;color:var(--espresso);display:block;margin-bottom:3px;font-size:11px}
+.agent-card .output-box pre{font-family:var(--font);white-space:pre-wrap;font-size:11px;color:var(--text-light)}
+
+#simulation{background:var(--white);border-top:1px solid var(--cream-dark);border-bottom:1px solid var(--cream-dark)}
+.sim-layout{display:grid;grid-template-columns:1fr 1fr;gap:36px;align-items:start;margin-top:28px}
+.sim-left{background:var(--cream);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow)}
+.sim-left h3{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.customer-card{background:var(--white);border-radius:var(--radius-sm);padding:16px;margin-bottom:16px;display:flex;align-items:center;gap:14px;box-shadow:0 1px 4px rgba(0,0,0,0.04)}
+.customer-card .avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--espresso),var(--espresso-light));color:var(--white);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;flex-shrink:0}
+.customer-card .info .name{font-weight:700;font-size:14px}
+.customer-card .info .detail{font-size:12px;color:var(--text-light)}
+.customer-card .status-badge{display:inline-block;background:#FEF2F2;color:#DC2626;font-size:11px;font-weight:700;padding:2px 10px;border-radius:20px;margin-top:4px}
+.sim-progress{margin:16px 0}
+.progress-bar{height:4px;background:var(--cream-dark);border-radius:2px;overflow:hidden;margin-bottom:6px}
+.progress-bar .fill{height:100%;background:linear-gradient(90deg,var(--latte),var(--latte-light));border-radius:2px;width:0%;transition:width 0.6s ease}
+.progress-text{font-size:12px;color:var(--text-light);display:flex;justify-content:space-between}
+.sim-buttons{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}
+.sim-output{background:var(--espresso);border-radius:var(--radius-sm);padding:18px;min-height:200px;color:var(--white);font-size:12px;line-height:1.7;overflow-y:auto;max-height:280px}
+.sim-output .ph{opacity:0.35;font-style:italic}
+.sim-output .msg{margin-bottom:8px;padding:8px 12px;border-radius:6px;animation:fadeSlide 0.4s ease}
+@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.sim-output .msg .tag{font-weight:700;font-size:10px;text-transform:uppercase;letter-spacing:0.5px;display:inline-block;margin-bottom:3px}
+.sim-output .msg .txt{opacity:0.9}
+
+.sim-right{background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);border:1px solid var(--cream-dark)}
+.sim-right h3{font-size:18px;font-weight:700;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.intervention-preview{background:var(--cream);border-radius:var(--radius-sm);padding:18px;margin-bottom:14px}
+.intervention-preview .channel{font-size:11px;color:var(--text-muted);margin-bottom:6px}
+.intervention-preview .channel strong{color:var(--text)}
+.intervention-preview .subject{font-size:14px;font-weight:700;color:var(--espresso);margin-bottom:8px}
+.intervention-preview .body{font-size:13px;line-height:1.7;color:var(--text)}
+.intervention-preview .body .hl{background:linear-gradient(to top,rgba(212,165,116,0.2) 40%,transparent 40%);font-weight:600}
+.success-card{background:linear-gradient(135deg,var(--espresso),var(--espresso-light));color:var(--white);border-radius:var(--radius-sm);padding:18px;text-align:center}
+.success-card .big{font-size:36px;font-weight:900;letter-spacing:-0.5px;color:var(--latte);line-height:1}
+.success-card .label{font-size:13px;opacity:0.7;margin:4px 0 10px}
+.success-card .detail{font-size:12px;opacity:0.5;line-height:1.5}
+
+#metrics{background:var(--espresso);color:var(--white)}
+#metrics h2 em{color:var(--latte)}
+#metrics .subtitle{color:rgba(255,255,255,0.45)}
+.metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:36px}
+.metric-card{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius-sm);padding:22px;text-align:center;transition:all 0.3s}
+.metric-card:hover{background:rgba(255,255,255,0.06);transform:translateY(-3px)}
+.metric-card .icon{font-size:26px;margin-bottom:6px}
+.metric-card .num{font-size:38px;font-weight:900;letter-spacing:-1px;display:block;line-height:1.1}
+.metric-card .num.latte{color:var(--latte)}
+.metric-card .num.coral{color:#F87171}
+.metric-card .num.green{color:var(--mint)}
+.metric-card .label{font-size:13px;opacity:0.5;margin-top:5px}
+.metric-card .sub{font-size:11px;opacity:0.25;margin-top:3px}
+.testimonial{background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);border-radius:var(--radius);padding:22px;margin-top:28px;display:flex;gap:14px;align-items:flex-start}
+.testimonial .q{font-size:14px;line-height:1.7;opacity:0.8;font-style:italic}
+.testimonial .by{font-size:12px;opacity:0.4;margin-top:6px;font-style:normal;font-weight:600}
+
+footer{background:var(--espresso);border-top:1px solid rgba(255,255,255,0.05);padding:28px 24px;text-align:center;color:rgba(255,255,255,0.2);font-size:12px}
+
+@media(max-width:860px){
+  .hero-grid{grid-template-columns:1fr;gap:28px}
+  .hero-grid h1{font-size:32px}
+  .problem-grid{grid-template-columns:1fr}
+  .sim-layout{grid-template-columns:1fr}
+  .metrics-grid{grid-template-columns:repeat(2,1fr)}
+  .root-cause{grid-template-columns:repeat(2,1fr)}
+  section{padding:40px 16px}
+  #hero{padding:48px 16px 64px}
+  h2{font-size:26px}
+  .agent-cards{grid-template-columns:1fr}
+}
+@media(max-width:500px){
+  .metrics-grid,.root-cause{grid-template-columns:1fr}
+  .header-inner nav{display:none}
+  .hero-grid h1{font-size:24px}
+  .hero-metrics{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+<div class="header-inner">
+  <div class="logo">
+    <svg width="24" height="24" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="6" fill="var(--latte)"/><path d="M8 12c0-2.2 1.8-4 4-4h8c2.2 0 4 1.8 4 4v2c0 2.2-1.8 4-4 4h-8c-2.2 0-4-1.8-4-4v-2z" fill="var(--espresso)"/><path d="M16 18v8" stroke="var(--espresso)" stroke-width="2"/><path d="M12 26h8" stroke="var(--espresso)" stroke-width="2"/><circle cx="16" cy="8" r="2" fill="var(--latte)"/></svg>
+    North<span>South</span> Coffee<small> · AI Platform</small>
+  </div>
+  <nav>
+    <a href="#problem">Challenge</a>
+    <a href="#agents" class="active">Agents</a>
+    <a href="#simulation">Demo</a>
+    <a href="#metrics">Results</a>
+    <span class="badge">v2.0</span>
+  </nav>
+</div>
+</header>
+
+<section id="hero">
+<div class="hero-grid">
+  <div>
+    <div class="hero-badge"><span class="dot"></span> Live · 120 locations · 240K loyalty members</div>
+    <h1>First drink free. <em>Then nothing.</em> That's the problem.</h1>
+    <p>NorthSouth's loyalty app drives sign-ups but not habits. 40% engagement drop in six months — because customers stop caring after the first reward. Five AI agents rebuild the loop.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" onclick="document.getElementById('simulation').scrollIntoView({behavior:'smooth'});setTimeout(runWorkflow,600)">▶ See It In Action</button>
+      <a class="btn btn-outline" href="#agents">Meet the Agents</a>
+    </div>
+  </div>
+  <div class="hero-metrics">
+    <div class="hero-metric">
+      <div class="top"><span class="val bad">40%</span><span style="color:#F87171;font-size:13px">↓ 6mo</span></div>
+      <div class="lbl">Loyalty engagement decline in 6 months</div>
+      <div class="sub">Target: +60% re-engagement</div>
+    </div>
+    <div class="hero-metric">
+      <div class="top"><span class="val good">78%</span><span style="color:var(--latte);font-size:13px">drop after 1st reward</span></div>
+      <div class="lbl">Users who never open the app after first free drink</div>
+      <div class="sub">The "one and done" problem</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="problem">
+<div class="section-inner">
+  <span class="section-tag">The Root Cause</span>
+  <h2>Why loyalty <em>fades after the first sip</em></h2>
+  <p class="subtitle">The free drink works as a hook — but without ongoing value, habit loops, and personalization, customers have no reason to return.</p>
+  <div class="root-cause">
+    <div class="root-item"><span class="pct">42<span class="sm">%</span></span><div class="label">No ongoing value after first reward</div></div>
+    <div class="root-item"><span class="pct">28<span class="sm">%</span></span><div class="label">Generic, irrelevant offers</div></div>
+    <div class="root-item"><span class="pct">18<span class="sm">%</span></span><div class="label">No habit or routine built</div></div>
+    <div class="root-item"><span class="pct">12<span class="sm">%</span></span><div class="label">App friction / notification fatigue</div></div>
+  </div>
+  <div class="problem-grid">
+    <div class="problem-card before">
+      <div class="icon">📉</div>
+      <h3>Current State</h3>
+      <p>Customer signs up, gets a free drink, then receives generic push notifications that feel like spam. No progression, no personalization, no reason to stay.</p>
+      <ul>
+        <li><span class="cross">✗</span> Generic "come back" offers to all users</li>
+        <li><span class="cross">✗</span> No personalization based on taste profile</li>
+        <li><span class="cross">✗</span> Zero gamification or progression</li>
+        <li><span class="cross">✗</span> No habit-forming mechanics</li>
+        <li><span class="check">✓</span> Strong initial sign-up conversion</li>
+      </ul>
+    </div>
+    <div class="problem-card after">
+      <div class="icon">📈</div>
+      <h3>AI Multi-Agent Approach</h3>
+      <p>Five agents diagnose the churn pattern, design habit loops, personalize every touchpoint, gamify the experience, and re-engage dormant users intelligently.</p>
+      <ul>
+        <li><span class="check">✓</span> Diagnoses exact drop-off patterns per user</li>
+        <li><span class="check">✓</span> Builds micro-commitment habit sequences</li>
+        <li><span class="check">✓</span> Tailors offers to individual taste and time</li>
+        <li><span class="check">✓</span> Tiered streaks, badges, and challenges</li>
+        <li><span class="check">✓</span> Smart win-back with loss aversion</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="agents">
+<div class="section-inner">
+  <div class="agents-header">
+    <span class="section-tag">The 5 Agents</span>
+    <h2>Meet your <em>loyalty revival team</em></h2>
+    <p class="subtitle">Five specialized AI agents work in sequence — from churn diagnosis to re-engagement — turning one-time users into daily regulars.</p>
+  </div>
+
+  <div class="pipeline-wrap">
+    <svg class="pipeline-svg" viewBox="0 0 1050 170" preserveAspectRatio="xMidYMid meet">
+      <line class="flow-line" x1="205" y1="65" x2="260" y2="65"/>
+      <line class="flow-line" x1="205" y1="105" x2="260" y2="105"/>
+      <line class="flow-line" x1="420" y1="65" x2="475" y2="65"/>
+      <line class="flow-line" x1="420" y1="105" x2="475" y2="105"/>
+      <line class="flow-line" x1="635" y1="65" x2="690" y2="65"/>
+      <line class="flow-line" x1="635" y1="105" x2="690" y2="105"/>
+      <line class="flow-line" x1="850" y1="65" x2="905" y2="65"/>
+      <line class="flow-line" x1="850" y1="105" x2="905" y2="105"/>
+      <line class="flow-line live" id="a1" x1="205" y1="65" x2="260" y2="65" style="opacity:0"/>
+      <line class="flow-line live" id="a2" x1="420" y1="65" x2="475" y2="65" style="opacity:0"/>
+      <line class="flow-line live" id="a3" x1="635" y1="65" x2="690" y2="65" style="opacity:0"/>
+      <line class="flow-line live" id="a4" x1="850" y1="65" x2="905" y2="65" style="opacity:0"/>
+      <circle class="flow-dot" id="d1" cx="230" cy="65" style="opacity:0"/>
+      <circle class="flow-dot" id="d2" cx="445" cy="65" style="opacity:0"/>
+      <circle class="flow-dot" id="d3" cx="660" cy="65" style="opacity:0"/>
+      <circle class="flow-dot" id="d4" cx="875" cy="65" style="opacity:0"/>
+
+      <g class="agent-node" data-idx="0" onclick="focusAgent(0)">
+        <rect class="node-bg" x="5" y="35" width="190" height="100" rx="12" fill="rgba(124,58,237,0.08)" stroke="var(--c-diag)" stroke-width="1.5"/>
+        <text class="node-emoji" x="100" y="60" text-anchor="middle">🔍</text>
+        <text class="node-label" x="100" y="85" fill="var(--c-diag)">Churn Diagnostician</text>
+        <text class="node-persona" x="100" y="100" fill="var(--c-diag)">Dr. Priya Sharma</text>
+        <text class="node-sub" x="100" y="115">Drop-off Analysis</text>
+      </g>
+
+      <g class="agent-node" data-idx="1" onclick="focusAgent(1)">
+        <rect class="node-bg" x="265" y="35" width="150" height="100" rx="12" fill="rgba(60,36,18,0.08)" stroke="var(--c-habit)" stroke-width="1.5"/>
+        <text class="node-emoji" x="340" y="60" text-anchor="middle">🔄</text>
+        <text class="node-label" x="340" y="85" fill="var(--c-habit)">Habit Architect</text>
+        <text class="node-persona" x="340" y="100" fill="var(--c-habit)">Marcus Webb</text>
+        <text class="node-sub" x="340" y="115">Behavioral Loops</text>
+      </g>
+
+      <g class="agent-node" data-idx="2" onclick="focusAgent(2)">
+        <rect class="node-bg" x="480" y="35" width="150" height="100" rx="12" fill="rgba(212,165,116,0.15)" stroke="var(--c-person)" stroke-width="1.5"/>
+        <text class="node-emoji" x="555" y="60" text-anchor="middle">🎯</text>
+        <text class="node-label" x="555" y="85" fill="var(--espresso)">Personalization Engine</text>
+        <text class="node-persona" x="555" y="100" fill="var(--espresso)">Elena Vos</text>
+        <text class="node-sub" x="555" y="115">Offer Tailoring</text>
+      </g>
+
+      <g class="agent-node" data-idx="3" onclick="focusAgent(3)">
+        <rect class="node-bg" x="695" y="35" width="150" height="100" rx="12" fill="rgba(123,196,160,0.12)" stroke="var(--c-gami)" stroke-width="1.5"/>
+        <text class="node-emoji" x="770" y="60" text-anchor="middle">🎮</text>
+        <text class="node-label" x="770" y="85" fill="var(--mint-dark)">Gamification Strategist</text>
+        <text class="node-persona" x="770" y="100" fill="var(--mint-dark)">Kenji Tanaka</text>
+        <text class="node-sub" x="770" y="115">Progression Mechanics</text>
+      </g>
+
+      <g class="agent-node" data-idx="4" onclick="focusAgent(4)">
+        <rect class="node-bg" x="910" y="35" width="130" height="100" rx="12" fill="rgba(245,166,35,0.1)" stroke="var(--c-reng)" stroke-width="1.5"/>
+        <text class="node-emoji" x="975" y="60" text-anchor="middle">💬</text>
+        <text class="node-label" x="975" y="85" fill="#B8860B">Re-engagement</text>
+        <text class="node-persona" x="975" y="100" fill="#B8860B">Sofia Reyes</text>
+        <text class="node-sub" x="975" y="115">Win-back Campaigns</text>
+      </g>
+
+      <rect x="1025" y="52" width="24" height="66" rx="7" fill="var(--latte)" opacity="0.12" stroke="var(--latte)" stroke-width="1.5"/>
+      <text x="1037" y="91" text-anchor="middle" font-size="18">✅</text>
+    </svg>
+  </div>
+
+  <div class="agent-cards" id="agentCards"></div>
+</div>
+</section>
+
+<section id="simulation">
+<div class="section-inner">
+  <span class="section-tag">Live Demo</span>
+  <h2>Watch the workflow <em>re-engage a lost customer</em></h2>
+  <p class="subtitle">Follow "Jordan Kim" — signed up 3 months ago, claimed free drink, hasn't opened the app in 6 weeks — through the full 5-agent loyalty revival pipeline.</p>
+  <div class="sim-layout">
+    <div class="sim-left">
+      <h3>▶ Simulation Controls</h3>
+      <div class="customer-card">
+        <div class="avatar">JK</div>
+        <div class="info">
+          <div class="name">Jordan Kim</div>
+          <div class="detail">jordan.k@email.com · +1 (206) 555-0318</div>
+          <div class="status-badge">🔴 Dormant · 6 weeks inactive</div>
+        </div>
+      </div>
+      <div class="sim-progress">
+        <div class="progress-bar"><div class="fill" id="progFill"></div></div>
+        <div class="progress-text"><span id="progLabel">Ready</span><span id="progPct">0%</span></div>
+      </div>
+      <div class="sim-buttons">
+        <button class="btn btn-primary btn-sm" id="btnRun" onclick="runWorkflow()">▶ Run Workflow</button>
+        <button class="btn btn-ghost btn-sm" style="background:var(--cream-dark);color:var(--text)" onclick="resetWorkflow()">⟲ Reset</button>
+        <button class="btn btn-ghost btn-sm" style="background:var(--cream-dark);color:var(--text)" id="btnAuto" onclick="toggleAuto()">🔄 Auto</button>
+      </div>
+      <div class="sim-output" id="simOut">
+        <div class="ph">Click "Run Workflow" to simulate the 5-agent loyalty revival pipeline in real time.</div>
+      </div>
+    </div>
+    <div class="sim-right">
+      <h3>📬 Re-engagement Preview</h3>
+      <div class="intervention-preview" id="msgPrev">
+        <div class="channel">Channel: <strong id="msgChan">Waiting for workflow...</strong></div>
+        <div class="subject" id="msgSub">Subject: waiting for workflow</div>
+        <div class="body" id="msgBody">The personalized re-engagement campaign will appear here once the workflow runs.</div>
+      </div>
+      <div class="success-card" id="offerPrev">
+        <div class="big" id="offerVal">—</div>
+        <div class="label" id="offerLabel">Waiting for workflow...</div>
+        <div class="detail" id="offerDetail"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<section id="metrics">
+<div class="section-inner">
+  <span class="section-tag">Projected Outcomes</span>
+  <h2>From <em>40% decline to 60% revival</em></h2>
+  <p class="subtitle">NorthSouth's 5-agent AI system is projected to reverse loyalty engagement decline and build lasting customer habits across all 120 locations.</p>
+  <div class="metrics-grid">
+    <div class="metric-card">
+      <div class="icon">📱</div>
+      <span class="num latte" id="mEngage">60%</span>
+      <span class="label">Current App Engagement</span>
+      <span class="sub">86% projected (+26pp)</span>
+    </div>
+    <div class="metric-card">
+      <div class="icon">☕</div>
+      <span class="num green" id="mFreq">3.2</span>
+      <span class="label">Avg. Visits / Month</span>
+      <span class="sub">5.8 projected</span>
+    </div>
+    <div class="metric-card">
+      <div class="icon">💳</div>
+      <span class="num latte" id="mRetain">22%</span>
+      <span class="label">Post-Reward Retention</span>
+      <span class="sub">68% projected</span>
+    </div>
+    <div class="metric-card">
+      <div class="icon">💰</div>
+      <span class="num coral" id="mRev">$2.8M</span>
+      <span class="label">Annual Revenue at Risk</span>
+      <span class="sub">$1.7M recovered</span>
+    </div>
+  </div>
+  <div class="testimonial">
+    <div style="font-size:28px;flex-shrink:0">💬</div>
+    <div>
+      <div class="q">"I signed up for the free drink, got it, and forgot about the app. Then I got this weirdly specific notification: 'Your oat latte with an extra shot is waiting.' They remembered my order. I've been back four times this month."</div>
+      <div class="by">— Jordan K., NorthSouth Coffee loyalty member (re-engaged after 6 weeks dormant)</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer>
+  <div class="section-inner">NorthSouth Coffee — AI Loyalty Engagement Platform &nbsp;·&nbsp; Built with the Octopus Multi-Agent Framework &nbsp;·&nbsp; © 2026</div>
+</footer>
+
+<script>
+const AGENTS = [
+  {
+    id:'diagnostician',
+    name:'Churn Diagnostician',
+    role:'Dr. Priya Sharma',
+    emoji:'🔍',
+    color:'var(--c-diag)',
+    personaName:'Dr. Priya Sharma',
+    personaTitle:'Lead Churn Analyst, Customer Behavior Science',
+    personaTraits:['Analytical','Thorough','Pattern-Focused'],
+    personaNote:'"Every drop-off tells a story. My job is to read the data and find exactly where the loyalty loop breaks."',
+    desc:'Analyzes behavioral data to identify exact drop-off patterns, segment users by churn risk, and pinpoint when and why engagement dies after the first reward.',
+    input:'Jordan: signed up 92 days ago, claimed free drink on day 1, app opened 4 times total, last open 43 days ago. Order: oat latte, extra shot. No push notification clicks ever.',
+    process:'Cohort analysis: engagement timeline, reward redemption vs. subsequent visits, notification response rate, order frequency decay curve.',
+    output:'Diagnosis: "One and done" pattern — 78% probability. Trigger: first reward claimed with no secondary value hook. Optimal intervention window: 14 days post-reward (missed). Current state: dormant. Recommended: multi-channel habit re-boot with personalized loss aversion.'
+  },
+  {
+    id:'habit',
+    name:'Habit Architect',
+    role:'Marcus Webb',
+    emoji:'🔄',
+    color:'var(--c-habit)',
+    personaName:'Marcus Webb',
+    personaTitle:'Behavioral Design Lead, Habit Formation',
+    personaTraits:['Systematic','Empathetic','Behavior-Focused'],
+    personaNote:'"A habit isn\'t built in a day — but it starts with one micro-commitment. I design the chain that leads to the ritual."',
+    desc:'Designs micro-commitment loops and habit sequences that create intrinsic motivation to return — not because of discounts, but because of routine.',
+    input:'Churn diagnosis: "one and done" pattern. Customer segment: young professional, morning coffee buyer, single-origin preference detected.',
+    process:'Designs 3-step habit loop: 1) Micro-commitment (order any drink within 48h), 2) Variable reward (surprise bonus points), 3) Escalating commitment (unlock "Morning Ritual" streak).',
+    output:'Habit Plan: Phase 1 — "Your Morning Ritual" 3-visit challenge with escalating rewards (visit 1: double points, visit 2: free pastry, visit 3: unlock Gold streak status). Expected completion: 68%. Projected habit formation: 12 cycles to automaticity.'
+  },
+  {
+    id:'personalization',
+    name:'Personalization Engine',
+    role:'Elena Vos',
+    emoji:'🎯',
+    color:'var(--c-person)',
+    personaName:'Elena Vos',
+    personaTitle:'Taste Profile Architect, Recommendation Systems',
+    personaTraits:['Creative','Precise','Taste-Focused'],
+    personaNote:'"I don\'t send offers. I send the right drink at the right time — based on weather, mood, and the last thing you loved."',
+    desc:'Tailors every offer, notification, and recommendation to individual taste profiles, purchase history, time of day, weather, and location.',
+    input:'Jordan: oat latte with extra shot (3 orders), mobile order history, typical visit time 7:45-8:15 AM weekday, store #42 (downtown), recent weather: rainy.',
+    process:'Taste graph: oat latte (confidence 94%), medium roast preferred, add-ons: vanilla syrup (1 of 3). Weather-personalization: warm drink recommendation on cold days. Time-slot optimization.',
+    output:'Personalized Offer: "Good morning, Jordan. It\'s rainy out — your usual oat latte with an extra shot is waiting at Store #42. Today only: double points on all warm drinks + free upgrade to a large. Show this at the counter." Predicted CTR: 42% (baseline: 8%).'
+  },
+  {
+    id:'gamification',
+    name:'Gamification Strategist',
+    role:'Kenji Tanaka',
+    emoji:'🎮',
+    color:'var(--c-gami)',
+    personaName:'Kenji Tanaka',
+    personaTitle:'Progression Design Lead, Player Engagement',
+    personaTraits:['Strategic','Creative','Psychology-Driven'],
+    personaNote:'"Points are table stakes. Badges, streaks, tiers, and challenges — that\'s what turns a customer into a player."',
+    desc:'Builds progression systems — streaks, tiers, challenges, and social features — that create intrinsic motivation and long-term engagement beyond discounts.',
+    input:'Habit plan from Architect + personalization from Engine. Current loyalty status: Bronze (entry tier). 0 streak history.',
+    process:'Designs 5-tier system (Bronze→Silver→Gold→Platinum→Diamond) with escalating perks. Introduces "Morning Streak" (consecutive weekday visits) and "Bean Explorer" challenge (try 5 different roasts).',
+    output:'Gamification System: Tier: Bronze→Silver (3 visits). Current streak: 0 days. Next badge: "Early Riser" (3 morning visits). Challenge: "Bean Explorer — try a single-origin this week for 500 bonus points." Social: "You\'re 2 visits behind your store\'s top streak holder." Projected streak adoption: 34%.'
+  },
+  {
+    id:'reengagement',
+    name:'Re-engagement Concierge',
+    role:'Sofia Reyes',
+    emoji:'💬',
+    color:'var(--c-reng)',
+    personaName:'Sofia Reyes',
+    personaTitle:'Win-back Campaign Architect, Customer Retention',
+    personaTraits:['Empathetic','Persuasive','Timing-Obsessed'],
+    personaNote:'"A dormant customer isn\'t gone. They just haven\'t heard the right message yet. I find the words and the moment."',
+    desc:'Crafts targeted win-back campaigns for dormant users using loss aversion (expiring points), social proof (friends are brewing), and personalized "we miss you" moments.',
+    input:'Dormant 43 days. 200 unclaimed points expiring in 7 days. Taste: oat latte. Last visit: weekday morning. Segment: "Slipped away after first reward."',
+    process:'Loss aversion framing (points expiring) + personalized offer + low-friction re-entry. Multi-channel: push notification + SMS + email. Timing: Tuesday 7:30 AM (highest re-engagement window).',
+    output:'Campaign: Push: "☕ Your 200 points expire in 7 days. Your oat latte is waiting — today\'s on us." SMS: "Jordan, it\'s been a while. We saved your usual oat latte with an extra shot — just show this text. Your points are still here. ☕ NorthSouth" Expected re-engagement: 38%. Projected LTV recovery: $214 per re-engaged user.'
+  }
+];
+
+let cStep = -1;
+let running = false;
+let autoMode = false;
+let autoTimer = null;
+
+function renderCards(){
+  const c = document.getElementById('agentCards');
+  c.innerHTML = AGENTS.map((a,i) => `
+    <div class="agent-card" id="c${i}" onclick="focusAgent(${i})">
+      <div class="card-head">
+        <span class="dot idle" id="dt${i}"></span>
+        <span class="role" style="color:${a.color}">${a.role}</span>
+      </div>
+      <h4>${a.emoji} ${a.name}</h4>
+      <div class="persona">
+        <div class="persona-name">${a.personaName}</div>
+        <div class="persona-title">${a.personaTitle}</div>
+        <div class="persona-traits">${a.personaTraits.map(t => '<span class="trait" style="background:'+a.color+'15;color:'+a.color+'">'+t+'</span>').join('')}</div>
+        <div class="persona-note">${a.personaNote}</div>
+      </div>
+      <div class="desc">${a.desc}</div>
+      <div class="output-box" id="op${i}">
+        <span class="olabel">📋 Processed Output</span>
+        <pre>${a.output}</pre>
+      </div>
+    </div>
+  `).join('');
+}
+renderCards();
+
+function focusAgent(idx){
+  document.querySelectorAll('.agent-card').forEach(c => c.classList.remove('active'));
+  const card = document.getElementById('c'+idx);
+  if(card) card.classList.add('active');
+  document.querySelectorAll('.pipeline-svg .agent-node').forEach(n => n.classList.remove('active'));
+  const nodes = document.querySelectorAll('.pipeline-svg .agent-node');
+  if(nodes[idx]) nodes[idx].classList.add('active');
+}
+
+function log(msg, c){
+  const out = document.getElementById('simOut');
+  const div = document.createElement('div');
+  div.className = 'msg';
+  div.innerHTML = '<span class="tag" style="color:'+c+'">'+msg.tag+'</span><div class="txt">'+msg.txt+'</div>';
+  out.appendChild(div);
+  out.scrollTop = out.scrollHeight;
+  const ph = out.querySelector('.ph');
+  if(ph) ph.remove();
+}
+
+function clearOut(){
+  document.getElementById('simOut').innerHTML = '<div class="ph">Workflow reset. Click "Run Workflow" to start again.</div>';
+}
+
+function stepAgent(idx){
+  return new Promise(resolve => {
+    const a = AGENTS[idx];
+    const colors = ['var(--c-diag)','var(--c-habit)','var(--c-person)','var(--c-gami)','var(--c-reng)'];
+    const dots = ['dt0','dt1','dt2','dt3','dt4'];
+    const outs = ['op0','op1','op2','op3','op4'];
+    const arrows = ['a1','a2','a3','a4'];
+    const particles = ['d1','d2','d3','d4'];
+
+    document.querySelectorAll('.agent-card .dot').forEach(d => {d.className='dot idle'});
+    for(let j=0; j<idx; j++) document.getElementById(dots[j]).className = 'dot done';
+    document.getElementById(dots[idx]).className = 'dot working';
+
+    document.querySelectorAll('.pipeline-svg .agent-node').forEach(n => n.classList.remove('active','completed'));
+    const nodes = document.querySelectorAll('.pipeline-svg .agent-node');
+    nodes[idx].classList.add('active');
+
+    document.getElementById(outs[idx]).classList.add('show');
+
+    if(idx > 0){
+      document.getElementById(arrows[idx-1]).style.opacity = '1';
+      document.getElementById(particles[idx-1]).style.opacity = '1';
+    }
+
+    log({tag:'▶ '+a.role.split(' ').slice(0,2).join(' ')+' · '+a.name, txt:'Processing...'}, colors[idx]);
+
+    const pct = Math.round(((idx+1)/5)*100);
+    document.getElementById('progFill').style.width = pct+'%';
+    document.getElementById('progPct').textContent = pct+'%';
+    const labels = ['Diagnosing','Designing habits','Personalizing','Gamifying','Re-engaging'];
+    document.getElementById('progLabel').textContent = labels[idx]+'...';
+
+    setTimeout(() => {
+      log({tag:'\u2713 '+a.role.split(' ')[0], txt:a.output.split('. ').slice(0,2).join('. ')+'.'}, colors[idx]);
+
+      if(idx === 2){
+        document.getElementById('msgChan').textContent = 'Push + SMS + Email';
+        document.getElementById('msgSub').textContent = 'Subject: 200 points expiring — and your oat latte is waiting';
+        document.getElementById('msgBody').innerHTML =
+          'Good morning Jordan,<br><br>It\'s a rainy one out there — perfect weather for your usual <span class="hl">oat latte with an extra shot</span>. We saved the recipe.<br><br>Your <span class="hl">200 loyalty points expire in 7 days</span> — that\'s a free drink waiting to be claimed. Stop by Store #42 this morning and we\'ll double your points AND upgrade you to a large, on us.<br><br>Show this message at the counter. Your order is already in the system.';
+      }
+      if(idx === 3){
+        document.getElementById('msgBody').innerHTML =
+          document.getElementById('msgBody').innerHTML +
+          '<br><br>🎮 <strong>Your Progress:</strong> You\'re 1 visit away from <span class="hl">Silver Tier</span> and unlocking the "Early Riser" badge. Your store\'s top streak holder is at 12 days — think you can catch up?';
+      }
+      if(idx === 4){
+        document.getElementById('offerVal').textContent = '200 PTS + FREE';
+        document.getElementById('offerLabel').textContent = 'Free Oat Latte + Double Points';
+        document.getElementById('offerDetail').textContent = 'Your personalized re-engagement campaign delivered. Predicted re-engagement: 38%. LTV recovery: $214 per user.';
+        document.getElementById('progLabel').textContent = '\u2713 Loyalty Revival Delivered';
+        document.getElementById('dt4').className = 'dot done';
+        nodes[idx].classList.remove('active');
+        nodes[idx].classList.add('completed');
+        log({tag:'\u2705 Re-engagement Live', txt:'Full personalized loyalty revival campaign delivered. Re-engagement probability: 38% (up from 4% baseline).'}, 'var(--latte)');
+      }
+
+      cStep = idx;
+      resolve();
+    }, idx === 0 ? 1200 : 1000);
+  });
+}
+
+async function runWorkflow(){
+  if(running) return;
+  running = true;
+  clearOut();
+  document.getElementById('btnRun').disabled = true;
+  document.getElementById('btnRun').textContent = '\u23F3 Running...';
+  document.getElementById('progFill').style.width = '0%';
+  document.getElementById('progPct').textContent = '0%';
+  document.getElementById('progLabel').textContent = 'Starting...';
+  cStep = -1;
+
+  for(let i=1; i<=4; i++){
+    document.getElementById('a'+i).style.opacity = '0';
+    document.getElementById('d'+i).style.opacity = '0';
+  }
+  for(let i=0; i<5; i++) document.getElementById('op'+i).classList.remove('show');
+  document.querySelectorAll('.agent-card .dot').forEach(d => {d.className='dot idle'});
+
+  document.getElementById('msgChan').textContent = 'Waiting for workflow...';
+  document.getElementById('msgSub').textContent = 'Subject: waiting for workflow';
+  document.getElementById('msgBody').textContent = 'The personalized re-engagement campaign will appear here once the workflow runs.';
+  document.getElementById('offerVal').textContent = '\u2014';
+  document.getElementById('offerLabel').textContent = 'Waiting for workflow...';
+  document.getElementById('offerDetail').textContent = '';
+
+  log({tag:'\uD83D\uDE80 NorthSouth AI', txt:'Jordan Kim (dormant 43 days, 200 points expiring) detected. Initiating 5-agent loyalty revival workflow.'}, 'var(--latte)');
+
+  for(let i=0; i<5; i++) await stepAgent(i);
+
+  document.getElementById('progLabel').textContent = '\u2713 Campaign Delivered';
+  document.getElementById('btnRun').disabled = false;
+  document.getElementById('btnRun').textContent = '\u25B6 Run Workflow';
+  document.getElementById('progFill').style.width = '100%';
+  document.getElementById('progPct').textContent = '100%';
+
+  animateMetrics();
+  running = false;
+
+  if(autoMode) autoTimer = setTimeout(resetWorkflow, 3000);
+}
+
+function resetWorkflow(){
+  if(running) return;
+  clearOut();
+  cStep = -1;
+  document.getElementById('progFill').style.width = '0%';
+  document.getElementById('progPct').textContent = '0%';
+  document.getElementById('progLabel').textContent = 'Ready';
+  document.querySelectorAll('.agent-card .dot').forEach(d => {d.className='dot idle'});
+  document.querySelectorAll('.pipeline-svg .agent-node').forEach(n => n.classList.remove('active','completed'));
+  for(let i=0; i<5; i++) document.getElementById('op'+i).classList.remove('show');
+  for(let i=1; i<=4; i++){
+    document.getElementById('a'+i).style.opacity = '0';
+    document.getElementById('d'+i).style.opacity = '0';
+  }
+  document.getElementById('msgChan').textContent = 'Waiting for workflow...';
+  document.getElementById('msgSub').textContent = 'Subject: waiting for workflow';
+  document.getElementById('msgBody').textContent = 'The personalized re-engagement campaign will appear here once the workflow runs.';
+  document.getElementById('offerVal').textContent = '\u2014';
+  document.getElementById('offerLabel').textContent = 'Waiting for workflow...';
+  document.getElementById('offerDetail').textContent = '';
+  if(autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
+}
+
+function toggleAuto(){
+  autoMode = !autoMode;
+  document.getElementById('btnAuto').textContent = autoMode ? '\u23F9 Auto' : '\uD83D\uDD04 Auto';
+  if(autoMode && !running && cStep < 0) runWorkflow();
+  if(!autoMode && autoTimer){ clearTimeout(autoTimer); autoTimer = null; }
+}
+
+function animateMetrics(){
+  const targets = [
+    {id:'mEngage', from:60, to:86, suffix:'%'},
+    {id:'mFreq', from:3.2, to:5.8, suffix:'', fmt: v => v.toFixed(1)},
+    {id:'mRetain', from:22, to:68, suffix:'%'},
+    {id:'mRev', from:2.8, to:1.7, prefix:'$', suffix:'M', fmt: v => '$'+(v%1===0?v+'.0':v)+'M'}
+  ];
+  targets.forEach(t => {
+    const el = document.getElementById(t.id);
+    let cur = t.from;
+    const step = (t.to - t.from) / 30;
+    const interval = setInterval(() => {
+      cur += step;
+      if((step > 0 && cur >= t.to) || (step < 0 && cur <= t.to)){
+        cur = t.to;
+        clearInterval(interval);
+      }
+      if(t.fmt) el.textContent = t.fmt(cur);
+      else el.textContent = Math.round(cur) + (t.suffix||'');
+    }, 40);
+  });
+}
+</script>
+</body>
+</html>
